@@ -1,0 +1,388 @@
+<?xml version="1.0"?>
+<pset>
+
+    <!--
+        CS 145, FALL 2016
+        PROBLEM SET 3 SUBMISSION TEMPLATE
+
+        Please copy and paste your answers (potentially Python code) into the appropriate spots below.
+
+        DO NOT DELETE THE <![CDATA[ ... ]]> LINES IN EACH <answer> TAG!
+        Doing so will break the autograder. To avoid accidentally breaking
+        something, please leave all existing comments in this template
+        intact in your submission.
+    -->
+    <student>
+        <name>
+            <!-- Insert your full name on the line below. -->
+Rao Zhang
+        </name>
+        <sunet>
+            <!-- Insert your SUNet ID (NOT your student ID number!) below. -->
+zhangrao
+        </sunet>
+    </student>
+
+
+    <!-- BEGIN PROBLEM 1 -->
+    <answer number="1a.i">
+        <!-- Paste your solution to problem 1, part a.i below this line. --><![CDATA[
+
+io_split_sort = 360
+# split and initial sort:
+# splite files into runs of size 20, then we have 8 runs in total
+# read is 3/4 free, size 20 means 5 IO cost, then multiplied by runs, is 40 IO cost
+# write is also double cost, 160 writes means 320 IO cost
+# exact IO cost of spliting is 40+320 = 360
+
+        ]]><!-- End problem 1, part a.i. -->
+    </answer>
+    <answer number="1a.ii">
+        <!-- Paste your solution to problem 1, part a.ii below this line. --><![CDATA[
+
+merge_arity = 4
+# Since 1 page in buffer is left to output, there are 19 pages remaining.
+# Since 4 page-chunk read is required, there are at most 16 pages (<=19) buffer we can use.
+# Hence the largest n is 16/4=19.
+
+        ]]><!-- End problem 1, part a.ii. -->
+    </answer>
+    <answer number="1a.iii">
+        <!-- Paste your solution to problem 1, part a.iii below this line. --><![CDATA[
+
+merge_passes = 2
+# After the first split and sort, we have 8 runs of size 20.
+# Each pass reduce the total runs to its 1/4.
+# Hence we need 2 passes to merge 8 into 1.
+
+        ]]><!-- End problem 1, part a.iii. -->
+    </answer>
+    <answer number="1a.iv">
+        <!-- Paste your solution to problem 1, part a.iv below this line. --><![CDATA[
+
+merge_pass_1 = 360
+# Cost of Read: Since reads are 3/4 free, hence 160/4 = 40 IO cost.
+# Cost of Write: Since writes are double cost, hence 160*2 = 320 IO cost.
+# Total IO Cost: 40+320 = 360.
+
+        ]]><!-- End problem 1, part a.iv. -->
+    </answer>
+    <answer number="1a.v">
+        <!-- Paste your solution to problem 1, part a.v below this line. --><![CDATA[
+
+total_io = 1080
+# Split and first sort: 360 IO cost.
+# Two passes sort: 360*2 = 720 IO cost.
+# Total IO Cost: 360+720 = 1080 IO cost.
+
+        ]]><!-- End problem 1, part a.v. -->
+    </answer>
+    <answer number="1b.i">
+        <!-- Paste your solution to problem 1, part b.i below this line. --><![CDATA[
+
+def cost_initial_runs(B, N, P):
+    reads = N / P
+    writes = N * 2
+    return reads + writes
+
+        ]]><!-- End problem 1, part b.i. -->
+    </answer>
+    <answer number="1b.ii">
+        <!-- Paste your solution to problem 1, part b.ii below this line. --><![CDATA[
+
+def cost_per_pass(B, N, P):
+    reads = N / P
+    writes = N * 2
+    return reads + writes
+
+        ]]><!-- End problem 1, part b.ii. -->
+    </answer>
+    <answer number="1b.iii">
+        <!-- Paste your solution to problem 1, part b.iii below this line. --><![CDATA[
+
+import math
+def num_passes(B, N, P):
+    ways = math.floor(float(B) / P)
+    runs = N / (B + 1)
+    passes = math.ceil(math.log(runs, ways))
+    return passes
+
+        ]]><!-- End problem 1, part b.iii. -->
+    </answer>
+    <answer number="1c">
+        <!-- Paste your solution to problem 1, part c below this line. --><![CDATA[
+
+# Save the optimal value here
+P = 11
+
+# Save a list of tuples of (P, io_cost) here, for all feasible P's
+points = []
+for p_value in range(1,50):
+    ways = math.floor(99 / p_value)
+    io_cost = external_merge_sort_cost(B=99, N=900, P=p_value)
+    tuple_P = (p_value, io_cost)
+    points.append( tuple_P )
+# points = [(1, 5400.0), (2, 4500.0), (3, 4200.0), (4, 4050.0), (5, 3960.0), (6, 3900.0), (7, 3856.0), (8, 3824.0), (9, 3800.0), (10, 3780.0), (11, 3762.0), (12, 5625.0), (13, 5607.0), (14, 5592.0), (15, 5580.0), (16, 5568.0), (17, 5556.0), (18, 5550.0), (19, 5541.0), (20, 5535.0), (21, 5526.0), (22, 5520.0), (23, 5517.0), (24, 5511.0), (25, 5508.0), (26, 5502.0), (27, 5499.0), (28, 5496.0), (29, 5493.0), (30, 5490.0), (31, 5487.0), (32, 5484.0), (33, 5481.0), (34, 9130.0), (35, 9125.0), (36, 9125.0), (37, 9120.0), (38, 9115.0), (39, 9115.0), (40, 9110.0), (41, 9105.0), (42, 9105.0), (43, 9100.0), (44, 9100.0), (45, 9100.0), (46, 9095.0), (47, 9095.0), (48, 9090.0), (49, 9090.0)]
+
+        ]]><!-- End problem 1, part c. -->
+    </answer>
+    <!-- END PROBLEM 1 -->
+
+
+    <!-- BEGIN PROBLEM 2 -->
+    <answer number="2a">
+        <!-- Paste your solution to problem 2, part a below this line. --><![CDATA[
+
+#Hashing R and S costs 2(P_R+P_S) IO. Matching R and S costs (P_R+P_S+P_RS) IO. Total 380 IO.
+#Hashing RS and T costs 2(P_RS+P_T) IO. Matching RS and T costs (P_RS+P_T+P_RST) IO. Total 3400 IO.
+#join1+join2=380+3400=3780 IO in total.
+IO_Cost_HJ_1 = 3780
+
+#Hashing T and S costs 2(P_T+P_S) IO. Matching T and S costs (P_T+P_S+P_ST) IO. Total 3800 IO.
+#Hashing ST and R costs 2(P_ST+P_R) IO. Matching ST and R costs (P_ST+P_R+P_RST) IO. Total 1780 IO.
+#join1+join2=3800+1780=5580 IO in total.
+IO_Cost_HJ_2 = 5580
+
+#Split & Sort R and S costs 2P_R + 4P_S IO. Scanning R and S costs (P_R+P_S+P_ST) IO. Total 580 IO.
+#Split & Sort RS and T costs 4P_RS + 6P_T IO. Scanning RS and T costs (P_RS+P_T+P_RST) IO. Total 7500 IO.
+#join1+join2=580+5500=6080 IO in total.
+IO_Cost_SMJ_1 = 8080
+
+#Split & Sort T and S costs 6P_T + 4P_S IO. Scanning T and S costs (P_T+P_S+P_ST) IO. Total 8000 IO.
+#Split & Sort ST and R costs 4P_ST + 2P_R IO. Scanning ST and R costs (P_ST+P_R+P_RST) IO. Total 2780 IO.
+#join1+join2=8000+2780=10780 IO in total.
+IO_Cost_SMJ_2 = 10780
+
+#Since P_R<B-2, join R and S costs P_R+ceil(P_R/(B-2))*P_S+P_RS IO. Total 160 IO.
+#Since P_RS>B-2, join RS and T costs P_RS+ceil(P_RS/(B-2))*P_T+P_RST IO. Total 2300 IO.
+#join+join2=160+2300=2460 IO in total.
+IO_Cost_BNLJ_1 = 2460
+
+#Since P_S>B-2, join T and S costs (P_S+ceil(P_S/(B-2))*P_T+P_ST) IO. Total 4600 IO.
+#Since P_R<B-2, join ST and R costs P_R+ceil(P_R/(B-2))*P_ST+P_RST IO. Total 760 IO.
+#join1+join2=4600+760=5360 IO in total.
+IO_Cost_BNLJ_2 = 5360 
+
+        ]]><!-- End problem 2, part a. -->
+    </answer>
+    <answer number="2b">
+        <!-- Paste your solution to problem 2, part b below this line. --><![CDATA[
+
+P_R = 2000
+P_S = 10
+P_T = 10
+P_RS = 10
+P_RST = 10
+B = 32
+
+#Hash R and S: 2(P_R+P_S)=2(2000+10)=4020 IO
+#Match R and S: P_R+P_S+P_RS=2000+10+10=2020 IO
+#Total: 4020+2020=6040 IO
+HJ_IO_Cost_join1 = 6040
+#Split & Sort RS and T: 2P_RS+2P_T=20+20=40 IO
+#Scan & Merge RS and T: P_RS+P_T+P_RST=10+10+10=30 IO
+#Total: 30+40=70 IO
+SMJ_IO_Cost_join2 = 70
+
+#Split & Sort R: 6P_R = 12000 IO
+#Split & Sort S: 2P_S = 20 IO
+#Scan R and S: P_R+P_S+P_RS=2000+10+10=2020 IO
+#Total: 12020+2020=14040 IO
+SMJ_IO_Cost_join1 = 14040
+#Hash RS and T: 2(P_RS+P_T)=2(10+10)=40 IO
+#Match RS and T: P_RS+P_T+P_RST=10+10+10=30 IO
+#Total: 30+40=70 IO
+HJ_IO_Cost_join2 = 70
+
+        ]]><!-- End problem 2, part b. -->
+    </answer>
+    <!-- END PROBLEM 2 -->
+
+
+    <!-- BEGIN PROBLEM 3 -->
+    <answer number="3a.i">
+        <!-- Paste your solution to problem 3, part a.i below this line. --><![CDATA[
+
+def lru_cost(N, M, B):
+    if(N>B+1):
+        return N*M
+    else:
+        return N
+
+        ]]><!-- End problem 3, part a.i. -->
+    </answer>
+    <answer number="3a.ii">
+        <!-- Paste your solution to problem 3, part a.ii below this line. --><![CDATA[
+
+def mru_cost(N, M, B):
+    if(N<=B+1):
+        return N
+    else:
+        return (B+1)+(N-B-1)*M
+
+        ]]><!-- End problem 3, part a.ii. -->
+    </answer>
+    <answer number="3a.iii">
+        <!-- Paste your solution to problem 3, part a.iii below this line. --><![CDATA[
+
+B = 6
+N = 10
+M = 20
+
+# Provide a list of tuple (m, difference between LRU and MRU in terms of IO cost) here:
+p3_lru_points = []
+for M in range(1, 21):
+    lru = lru_cost(N, M, B)
+    mru = mru_cost(N, M, B)
+    abso = abs(lru - mru)
+    point = (M, abso)
+    p3_lru_points.append( point )
+# p3_lru_points = [(1, 0), (2, 7), (3, 14), (4, 21), (5, 28), (6, 35), (7, 42), (8, 49), (9, 56), (10, 63), (11, 70), (12, 77), (13, 84), (14, 91), (15, 98), (16, 105), (17, 112), (18, 119), (19, 126), (20, 133)]
+
+        ]]><!-- End problem 3, part a.iii. -->
+    </answer>
+    <answer number="3b.i">
+        <!-- Paste your solution to problem 3, part b.i below this line. --><![CDATA[
+
+def clock_cost(N, M, B):
+    if(N>B+1):
+        return N*M
+    else:
+        return N
+
+        ]]><!-- End problem 3, part b.i. -->
+    </answer>
+    <answer number="3b.ii">
+        <!-- Paste your solution to problem 3, part b.ii below this line. --><![CDATA[
+
+# EXPLANATION GOES HERE
+# No. The CLOCK eviction policy does not prevent sequential flooding. It works in the same way as LRU.
+# If the second chance bit is set to 1, then CLOCK policy can save IO.
+# However, in this quesion, it will never be set to 1.
+
+        ]]><!-- End problem 3, part b.ii. -->
+    </answer>
+    <!-- END PROBLEM 3 -->
+
+
+    <!-- BEGIN PROBLEM 4 -->
+    <answer number="4a.i">
+        <!-- Paste your solution to problem 4, part a.i below this line. --><![CDATA[
+
+def hashJoin(table1, table2, hashfunction,buckets):
+    # Parition phase 
+    t1Partition = partitionTable(table1,hashfunction,buckets)
+    t2Partition = partitionTable(table2,hashfunction,buckets)
+    # Merge phase
+    result = []
+    # ANSWER GOES HERE
+    for i in range(0, buckets):
+        t1 = t1Partition[i] # t1 is a list
+        t2 = t2Partition[i] # t2 is a list
+        for t1Entry in t1:
+            for t2Entry in t2:
+                if(t1Entry.playername == t2Entry.playername):
+                    result.append((t1Entry.teamname, t1Entry.playername, t2Entry.collegename))
+    # To populate your output you should use the following code(t1Entry and t2Entry are possible var names for tuples)
+    # result.append((t1Entry.teamname, t1Entry.playername, t2Entry.collegename))
+    return result
+# duplications appear at 110, with playername "Andrew Jackson"
+
+        ]]><!-- End problem 4, part a.i. -->
+    </answer>
+    <answer number="4a.ii">
+        <!-- Paste your solution to problem 4, part a.ii below this line. --><![CDATA[
+
+import time
+start_time = time.time()
+res1 = hashJoin(teams, colleges, h, buckets)
+end_time = time.time()
+duration = (end_time - start_time)*1000 #in ms
+print 'The join took %0.2f ms and returned %d tuples in total' % (duration,len(res1))
+
+# EXPLANATION GOES HERE
+# The total number of entries output is reasonable, 12720 + 20 duplications (Andrew Jackson)
+# However, the runtime is not reasonable.
+# The runtime takes too long. For hash join, it should be much faster.
+# The problem is that the hash function hashes data with skew, which increases match time.
+# The algorithm can be more effective, with a better hash function.
+
+        ]]><!-- End problem 4, part a.ii. -->
+    </answer>
+    <answer number="4b.i">
+        <!-- Paste your solution to problem 4, part b.i below this line. --><![CDATA[
+
+# ANSWER
+# partition- a table partition as returned by method partitionTable
+# return value - a float representing the skew of hash function (i.e. stdev of chefs assigned to each restaurant)
+import math
+def calculateSkew(partition):
+    # ANSWER STARTS HERE
+    _sum = 0
+    for i in range(0, len(partition)):
+        _sum = _sum + len(partition[i])
+    _avg = float(_sum) / len(partition)
+    _squaredSum = 0
+    for i in range(0, len(partition)):
+        _squaredSum = _squaredSum + (len(partition[i]) - _avg)**2
+    skew = math.sqrt(float(_squaredSum) / len(partition))
+    # ANSWER ENDS HERE
+    return skew
+print calculateSkew(teamsPartition)
+
+        ]]><!-- End problem 4, part b.i. -->
+    </answer>
+    <answer number="4b.ii">
+        <!-- Paste your solution to problem 4, part b.ii below this line. --><![CDATA[
+
+# Design a better hash function and print the skew difference for 
+def hBetter(x,buckets):
+    rawKey = hash(x)
+    return rawKey % buckets
+
+# Plot bucket histogram
+buckets = 500
+teamsPartition = partitionTable(teams,hBetter,buckets)
+ids, counts = histogramPoints(teamsPartition)
+plt.plot(ids, counts)
+plt.plot()
+
+        ]]><!-- End problem 4, part b.ii. -->
+    </answer>
+    <answer number="4b.iii">
+        <!-- Paste your solution to problem 4, part b.iii below this line. --><![CDATA[
+
+start_time = time.time()
+
+res1 = hashJoin(teams, colleges, hBetter, buckets)# ENTER CODE HERE
+
+end_time = time.time()
+duration = (end_time - start_time)*1000 #in ms
+print 'The join took %0.2f ms and returned %d tuples in total' % (duration,len(res1))
+
+# WRITE DOWN THE SPEED UP
+# Speed-up: 8000 - 200 = 7800 ms, reduced more than 95% runtime cost.
+# For match phase, with less skew, it takes less time to join!
+# A better hash function with little skew saves a great amount of time.
+
+        ]]><!-- End problem 4, part b.iii. -->
+    </answer>
+    <!-- END PROBLEM 4 -->
+
+    <!-- BEGIN BONUS 1 -->
+    <answer number="bonus1">
+        <!-- Paste your solution to bonus 1 below this line. --><![CDATA[
+	
+    	]]><!-- End bonus 1 -->
+    </answer>
+    <!-- END BONUS 1  -->
+    
+    <!-- BEGIN BONUS 2 -->
+    <answer number="bonus2">
+        <!-- Paste your solution to bonus 2 below this line. --><![CDATA[
+	
+	    ]]><!-- End bonus 2 -->
+    </answer>
+    <!-- END BONUS 2  -->
+</pset>
+
