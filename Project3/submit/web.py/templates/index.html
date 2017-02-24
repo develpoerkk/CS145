@@ -1,0 +1,77 @@
+{% block content %}
+{# <input type="button" name="Submit" onclick="javascript:history.back(-1);" value="Go Back!"> #}
+<h3>Auction Status: </h3> 
+<ul>
+<span>{{ auction_status }}<span>
+</ul>
+<h3>Auction Details:</h3>
+<ul>
+{% if search_result %}
+{% for result in search_result %}
+	{% for key in result %}
+		<div>
+			<span>{{ key|e }}</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span>{{ result[key]|e }}</span>
+		</div>
+  	{% endfor %}
+  	<div>--------</div>
+{% endfor %}
+{% else %}
+<div>No results</div>
+{% endif %}
+</ul>
+<h3>Auction Bids:</h3>
+<ul>
+{% if search_bids %}
+{% for result in search_bids %}
+	{% for key in result %}
+		<div>
+			<span>{{ key|e }}</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span>{{ result[key]|e }}</span>
+		</div>
+  	{% endfor %}
+  	<div>--------</div>
+{% endfor %}
+{% else %}
+<div>No results</div>
+{% endif %}
+</ul>
+<h3>More Detailed Information of this Auction:</h3>
+<h5>Categories of the Item:</h5>
+<ul>
+{% if auction_categories %}
+{% for result in auction_categories %}
+	{% for key in result %}
+		<div>
+			<span>{{ key|e }}</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span>{{ result[key]|e }}</span>
+		</div>
+  	{% endfor %}
+  	<div>--------</div>
+{% endfor %}
+{% else %}
+<div>No results</div>
+{% endif %}
+</ul>
+<h5>Information of the Seller:</h5>
+<ul>
+{% if auction_seller %}
+{% for result in auction_seller %}
+	{% for key in result %}
+		<div>
+			<span>{{ key|e }}</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span>{{ result[key]|e }}</span>
+		</div>
+  	{% endfor %}
+  	<div>--------</div>
+{% endfor %}
+{% else %}
+<div>No results</div>
+{% endif %}
+</ul>
+{# also make sure to include this very last line as well #}
+{% endblock %}
