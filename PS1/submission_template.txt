@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<pset>
+
+    <!--
+        CS 145, FALL 2016
+        PROBLEM SET 1 SUBMISSION TEMPLATE
+
+        Please copy and paste your SQL queries (and potentially Python code
+        for the bonus question) into the appropriate spots below. 
+
+        When submitting SQL queries, please do not include the intitial 
+        %sql or %%sql IPython commands. Just include the SQL code.
+
+        DO NOT DELETE THE <![CDATA[ ... ]]> LINES IN EACH <answer> TAG!
+        Doing so will break the autograder. To avoid accidentally breaking
+        something, please leave all existing comments in this template
+        intact in your submission.
+    -->
+
+    <student>
+        <name>
+            <!-- Insert your full name on the line below. -->
+Rao Zhang
+        </name>
+        <sunet>
+            <!-- Insert your SUNet ID (NOT your student ID number!) below. -->
+zhangrao
+        </sunet>
+    </student>
+
+
+    <!-- BEGIN PROBLEM 1 -->
+    <answer number="1a">
+        <!-- Paste your solution to problem 1, part (a) below this line. --><![CDATA[
+
+select a.i, a.j, ( a.val * b.val ) as val 
+from a, b 
+where a.i = b.i and a.j = b.j 
+order by a.i, a.j;
+
+        ]]><!-- End problem 1, part (a). -->
+    </answer>
+    <answer number="1b">
+        <!-- Paste your solution to problem 1, part (b) below this line. --><![CDATA[
+
+select pi as i, j, val
+from a, c
+where a.i = c.ind
+order by pi
+
+        ]]><!-- End problem 1, part (b). -->
+    </answer>
+    <answer number="1c">
+        <!-- Paste your solution to problem 1, part (c) below this line. --><![CDATA[
+
+select c2.pi as i, j, val
+from a, c as c1, c as c2
+where a.i = c1.ind and c1.pi = c2.ind
+order by c2.pi
+
+        ]]><!-- End problem 1, part (c). -->
+    </answer>
+    <answer number="1d">
+        <!-- Paste your solution to problem 1, part (d) below this line. --><![CDATA[
+
+select a1.i, a1.j, max(a2.val) as val
+from a as a1, a as a2
+where ((a1.i - a2.i = 1 or a1.i - a2.i = -1) and a1.j = a2.j) or
+((a1.j - a2.j = 1 or a1.j - a2.j = -1 or a1.j = a2.j) and a1.i = a2.i)
+group by a1.i, a1.j
+
+        ]]><!-- End problem 1, part (d). -->
+    </answer>
+    <!-- END PROBLEM 1 -->
+
+
+    <!-- BEGIN PROBLEM 2 -->
+    <answer number="2a">
+        <!-- Paste your solution to problem 2, part (a) below this line. --><![CDATA[
+
+select region, count(state) as num_state_winners
+from energy 
+where 
+solar in (select max(solar) from energy) or 
+wind in (select max(wind) from energy) or
+hydro in (select max(hydro) from energy) or
+nuclear in (select max(nuclear) from energy)
+group by region
+order by count(state) desc
+
+        ]]><!-- End problem 2, part (a). -->
+    </answer>
+    <answer number="2b">
+        <!-- Paste your solution to problem 2, part (b) below this line. --><![CDATA[
+
+select state, solar, wind
+from energy 
+where state not in
+(select e1.state
+ from energy as e1, energy as e2
+ where 
+ (e2.solar > e1.solar and e2.wind >= e1.wind) or
+ (e2.solar >= e1.solar and e2.wind > e1.wind)
+)
+order by (solar + wind) desc
+
+        ]]><!-- End problem 2, part (b). -->
+    </answer>
+    <answer number="2c">
+        <!-- Paste your solution to problem 2, part (c) below this line. --><![CDATA[
+
+select region
+from energy
+where nuclear <> 0
+group by region
+having min(nuclear) > 0.1 * (select max(nuclear) from energy)
+
+        ]]><!-- End problem 2, part (c). -->
+    </answer>
+    <answer number="2d">
+        <!-- Paste your solution to problem 2, part (d) below this line. --><![CDATA[
+
+select minEnergy.region
+from
+( select e1.region, e1.state, e1.nuclear
+from energy as e1
+where e1.nuclear not in
+( select e1.nuclear
+  from energy as e2
+  where e1.nuclear < e2.nuclear
+)
+order by region
+) as maxEnergy,
+( select e1.region, e1.state, e1.nuclear
+from energy as e1
+where e1.nuclear not in
+( select e1.nuclear
+  from energy as e2
+  where e1.nuclear > e2.nuclear and e1.region = e2.region and e2.nuclear > 0
+) and e1.nuclear <> 0
+order by region
+ ) as minEnergy
+where minEnergy.nuclear > 0.1 * maxEnergy.nuclear
+
+        ]]><!-- End problem 2, part (d). -->
+    </answer>
+    <!-- END PROBLEM 2 -->
+
+
+    <!-- BEGIN PROBLEM 3 -->
+    <answer number="3a">
+        <!-- Paste your solution to problem 3, part (a) below this line. --><![CDATA[
+
+select i, sum(x.val * model.val) as val
+from x, model
+where x.j = model.j
+group by x.i
+limit 5
+
+        ]]><!-- End problem 3, part (a). -->
+    </answer>
+    <answer number="3b">
+        <!-- Paste your solution to problem 3, part (b) below this line. --><![CDATA[
+
+drop view if exists prediction;
+create view prediction as
+select i, (val > 0) as val
+from answer_p3a
+
+        ]]><!-- End problem 3, part (b). -->
+    </answer>
+    <answer number="3c">
+        <!-- Paste your solution to problem 3, part (c) below this line. --><![CDATA[
+
+select avg( iris.label = answer_p3b.val ) as accuracy
+from iris, answer_p3b
+where iris.i = answer_p3b.i
+
+        ]]><!-- End problem 3, part (c). -->
+    </answer>
+    <!-- END PROBLEM 3 -->
+
+
+    <!-- BEGIN BONUS -->
+    <answer number="bonus1">
+        <!-- Paste your solution to bonus problem 1 below this line. --><![CDATA[
+
+select model.j, model.val + 0.0001 * ( sum( ( iris.label - p3b.val ) * x.val ) ) as val
+from model, iris, answer_p3b as p3b, x
+where iris.i = p3b.i and iris.i = x.i and model.j = x.j
+group by x.j
+
+        ]]><!-- End bonus problem 1. -->
+    </answer>
+    <!-- END BONUS -->
+
+</pset>
