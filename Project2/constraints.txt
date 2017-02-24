@@ -1,0 +1,51 @@
+# constraints.txt
+# created by Rao on Nov 12, 2016
+
+1. two users can share the same User ID.
+ Implementation: Make UserID (in Users table) PRIMARY KEY.
+ Location: create.sql
+2. All sellers and bidders must already exist as users.
+ Implementation: Make UserID (in Items table) and UserID (in Bids table) FOREIGN KEY REFERENCES ON UserID (in Users table).
+ Location: create.sql
+3. No two items can share the same Item ID.
+ Implementation: Make ItemID (in Items table) PRIMARY KEY.
+ Location: create.sql
+4. Every bid must correspond to an actual item.
+ Implementation: Make ItemID (in Bids table) FOREIGN KEY REFERENCES ON ItemID (in Items table).
+ Location: create.sql
+5. The items for a given category must all exist.
+ Implementation: Make ItemID (in Categories table) FOREIGN KEY REFERENCES ON ItemID(in Items table). 
+ Location: create.sql
+6. An item cannot belong to a particular category more than once.
+ Implementation: Make {ItemID (in Bids table) and Category(in Bids table)} PRIMARY KEY.
+ Location: create.sql
+7. The end time for an auction must always be after its start time.
+ Implementation: Check Started (in Items table) always less than Ends(in Items table)
+ Location: create.sql
+8. The Current Price of an item must always match the Amount of the most recent bid for that item.
+ Implementation: Add a trigger for this constraint. When a new tuple is allowed to be inserted into Bids table, then update Currently (in Items table) according to new.Amount (in Bids table).
+ Location: trigger08_add.sql, trigger08_drop.sql
+9. A user may not bid on an item he or she is also selling.
+ Implementation: Add a trigger for this constraint. When a new tuple is inserted into Bids table, and new.ItemID (in Bids table) = ItemID (in Items table) and new.UserID (in Bids table) = UserID (in Items table), the trigger should force roll back and prompt error message.
+ Location: trigger09_add.sql, trigger09_drop.sql
+10. No auction may have two bids at the exact same time.
+ Implementation: Make {ItemID (in Bids table) and Time (in Bids table)} PRIMARY KEY.
+ Location: create.sql
+11. No auction may have a bid before its start time or after its end time.
+ Implementation: Add a trigger for this constraint. When a new tuple is inserted into Bids table, and new.Time (in Bids table) > Items.Ends or new.Time < Items.Started, the trigger should force roll back and prompt error message.
+ Location: trigger11_add.sql, trigger11_drop.sql
+12. No user can make a bid of the same amount to the same item more than once.
+ Implementation: Make in Bids table {ItemID, UserID, Amount} UNIQUE.
+ Location: create.sql
+13. In every auction, the Number of Bids attribute corresponds to the actual number of bids for that particular item.
+ Implementation: Add a trigger for this constraint. When a new tuple is inserted into Bids table, update Number_of_Bids (in Items table) by increasing corresponding ItemID (in Items table) by 1. 
+ Location: trigger13_add.sql, trigger13_drop.sql
+14. Any new bid for a particular item must have a higher amount than any of the previous bids for that particular item.
+ Implementation: Add a trigger for this constraint. When a new tuple is inserted into Bids table, and new.Amount <= Items.Currently and new.ItemID = Items.ItemID, the trigger should force roll back and prompt error message. 
+ Location: trigger14_add.sql, trigger14_drop.sql
+15. All new bids must be placed at the time which matches the current time of your AuctionBase system. 
+ Implementation: Add a trigger for this constraint. When a new tuple is inserted into Bids table, and new.Time != CurrentTime.CurrTime, the trigger should force roll back and prompt error message.
+ Location: trigger15_add.sql, trigger15_drop.sql
+16. The current time of your AuctionBase system can only advance forward in time, not backward in time.
+ Implementation: Add a trigger for this constraint. Insert is denied. Delete is denied. When a new tuple is inserted into CurrentTime table, and new.CurrTime < CurrentTime.CurrTime, the trigger should force roll back and prompt error message.
+ Location: trigger16_add.sql, trigger16_drop.sql
