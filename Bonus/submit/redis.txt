@@ -1,0 +1,106 @@
+(Question 1)
+  HMSET user:11 username "johnsmith" age 24 city "Stanford"
+  HMSET users johnsmith 11
+(Question 2)
+  DEL user:8
+  DEL users bob
+(Question 3)
+  Does adding a school field to one of our user hashes add a school field to any of the other user hashes? No
+  How does this differ from how you’d add a new field to information about users in SQL? It should create this column for all other users (tuples).
+(Question 4)
+  HSET user:3 warning "A warning for 3."
+  HSET user:5 warning "A warning for 5."
+  HSET user:10 warning "A warning for 10."
+(Question 5)
+  cities:Seattle:users
+  cities:Tokyo:users
+  cities:Stanford:users
+  cities:Boston:users
+  cities:Chicago:users
+(Question 6)
+  SADD cities:Seattle:users 1
+  SADD cities:Tokyo:users 2
+  SADD cities:Seattle:users 3
+  SADD cities:Chicago:users 4
+  SADD cities:Stanford:users 5
+  SADD cities:Stanford:users 6
+  SADD cities:Boston:users 7
+  SADD cities:Chicago:users 8
+  SADD cities:Chicago:users 9
+  SADD cities:Chicago:users 10
+  SADD cities:Stanford:users 11
+(Question 7)
+  SCARD cities:Seattle:users
+  (integer) 2
+  SCARD cities:Boston:users
+  (integer) 1
+  SCARD cities:Tokyo:users
+  (integer) 1
+(Question 8)
+  Do they provide the same functionality?
+  Yes, they provide the same functionality to some extent, such as insert, delete, select, update.
+  How easy or hard are they to set up compared to each other?
+  SQL is easier to set up, compared with Redis.
+  Is there a performance difference when doing lookups?
+  Redis seems faster if the set is already exists. If SQL has index, the look-up performance of SQL would be same as Redis.
+  How about when modifying data?
+  When modifying data, it requires more work for Redis to update the hashes and sets.
+(Question 9)
+  What new keys would you create if you wanted to query based on users’s ages?
+  I would created a new key on users' ages.
+  How would you name them? 
+  users:ages
+  Would you use a Set?A Hash? A Sorted Set? 
+  I would use a Sorted Set.
+  Why?
+  Because the Sorted Set can sort ages according 'score' parameter, which is convenient for looking up.
+(Question 10)
+  ZADD users:ages 29 "jill"
+  ZADD users:ages 16 "kirito"
+  ZADD users:ages 21 "sara"
+  ZADD users:ages 24 "ann"
+  ZADD users:ages 99 "joy"
+  ZADD users:ages 48 "firas"
+  ZADD users:ages 34 "matt"
+  ZADD users:ages 32 "bob"
+  ZADD users:ages 51 "grace"
+  ZADD users:ages 73 "phil"
+  ZADD users:ages 24 "johnsmith"
+(Question 11)
+  ZRANGE users:ages 0 -1 WITHSCORES
+   1) "kirito"
+   2) "16"
+   3) "sara"
+   4) "21"
+   5) "ann"
+   6) "24"
+   7) "johnsmith"
+   8) "24"
+   9) "jill"
+  10) "29"
+  11) "bob"
+  12) "32"
+  13) "matt"
+  14) "34"
+  15) "firas"
+  16) "48"
+  17) "grace"
+  18) "51"
+  19) "phil"
+  20) "73"
+  21) "joy"
+  22) "99"
+(Quesiton 12)
+  ZRANGE users:ages 0 0 WITHSCORES
+  1) "kirito"
+  2) "16"
+(Quesito 13)
+  ZRANGE users:ages -1 -1 WITHSCORES
+  1) "joy"
+  2) "99"
+(Question 14)
+  ZCARD users:ages
+  (integer) 11
+  ZRANGE users:ages 5 5 WITHSCORES
+  1) "bob"
+  2) "32"
