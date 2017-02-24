@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<pset>
+
+    <!--
+        CS 145, FALL 2016
+        PROBLEM SET 2 SUBMISSION TEMPLATE
+
+        Please copy and paste your SQL queries (and potentially Python code
+        for the bonus question) into the appropriate spots below.
+
+        When submitting SQL queries, please do not include the intitial
+        %sql or %%sql IPython commands. Just include the SQL code.
+
+        DO NOT DELETE THE <![CDATA[ ... ]]> LINES IN EACH <answer> TAG!
+        Doing so will break the autograder. To avoid accidentally breaking
+        something, please leave all existing comments in this template
+        intact in your submission.
+    -->
+
+    <student>
+        <name>
+            <!-- Insert your full name on the line below. -->
+Rao Zhang
+        </name>
+        <sunet>
+            <!-- Insert your SUNet ID (NOT your student ID number!) below. -->
+zhangrao
+        </sunet>
+    </student>
+
+
+    <!-- BEGIN PROBLEM 1 -->
+    <answer number="1a">
+        <!-- Paste your solution to problem 1, part (a) below this line. --><![CDATA[
+
+select *
+from r as r1, r as r2
+where 
+((r1.a = r2.a and r1.b = r2.b) and r1.c != r2.c) or
+(r1.c = r2.c and (r1.a != r2.a or r1.b != r2.b));
+
+        ]]><!-- End problem 1, part (a). -->
+    </answer>
+    <answer number="1b">
+        <!-- Paste your solution to problem 1, part (b) below this line. --><![CDATA[
+
+select *
+from r as r1, r as r2
+where
+(r1.a = r2.a and r1.b = r2.b and r1.c =  r2.c) and (r1.d != r2.d or r1.e != r2.e);
+
+        ]]><!-- End problem 1, part (b). -->
+    </answer>
+    <answer number="1c">
+        <!-- Paste your solution to problem 1, part (c) below this line. --><![CDATA[
+
+select *
+from s as s1, s as s2
+where
+(s1.a = s2.a and (s1.b != s2.b or s1.c != s2.c)) or
+(s1.b = s2.b and (s1.a != s2.a or s2.c != s2.c));
+
+        ]]><!-- End problem 1, part (c). -->
+    </answer>
+    <answer number="1d">
+        <!-- Paste your solution to problem 1, part (d) below this line. --><![CDATA[
+
+select *
+from r as r1, r as r2
+    where r1.a = r2.a and not exists(
+    select *
+    from r as r3
+    where 
+    r3.a = r1.a and
+    (r3.c = r1.c and r3.e = r1.e) and
+    (r3.b = r2.b and r3.d = r2.d)
+);
+
+        ]]><!-- End problem 1, part (d). -->
+    </answer>
+    <!-- END PROBLEM 1 -->
+
+
+    <!-- BEGIN PROBLEM 2 -->
+    <answer number="2a">
+        <!-- Paste your solution to problem 2, part (a) below this line. --><![CDATA[
+
+answer = True
+explanation = "If K is a superkey, then K -> X and K -> Y and K -> Z. No matter what new FD is added, it will not change the original FDs above. Hence, the above three FDs indicate that K is still a superkey."
+
+        ]]><!-- End problem 2, part (a). -->
+    </answer>
+    <answer number="2b">
+        <!-- Paste your solution to problem 2, part (b) below this line. --><![CDATA[
+
+answer = False
+K = set(("X", "Y"))
+FDs = [
+    (set(("X", "Y")), set("Z")),
+    (set("Y"), set("Z"))
+]
+new_FD = (set("Y"), set("X"))
+
+        ]]><!-- End problem 2, part (b). -->
+    </answer>
+    <answer number="2c">
+        <!-- Paste your solution to problem 2, part (b) below this line. --><![CDATA[
+
+answer = False
+K = set(("X1", "X2"))
+FDs = [
+    (set("X1"), set("X3")),
+    (set("X2"), set("X4")),
+    (set("X3"), set("X1"))
+]
+new_FD = (set("X4"), set("X3"))
+
+        ]]><!-- End problem 2, part (c). -->
+    </answer>
+    <!-- END PROBLEM 2 -->
+
+
+    <!-- BEGIN PROBLEM 3 -->
+    <answer number="3a">
+        <!-- Paste your solution to problem 3, part (a) below this line. --><![CDATA[
+
+DROP TABLE IF EXISTS T; 
+CREATE TABLE T(A int, B int, C int, D int);
+INSERT INTO T VALUES (0, 0, 0, 0);
+INSERT INTO T VALUES (0, 1, 1, 1);
+INSERT INTO T VALUES (1, 0, 2, 2);
+INSERT INTO T VALUES (1, 1, 3, 3);
+
+        ]]><!-- End problem 3, part (a). -->
+    </answer>
+    <answer number="3b">
+        <!-- Paste your solution to problem 3, part (b) below this line. --><![CDATA[
+
+DROP TABLE IF EXISTS T;
+CREATE TABLE T(A int, B int, C int, D int);
+INSERT INTO T VALUES (0, 0, 0, 0);
+INSERT INTO T VALUES (1, 1, 1, 1);
+
+        ]]><!-- End problem 3, part (b). -->
+    </answer>
+    <answer number="3c">
+        <!-- Paste your solution to problem 3, part (c) below this line. --><![CDATA[
+
+DROP TABLE IF EXISTS T;
+CREATE TABLE T(A int, B int, C int, D int);
+
+        ]]><!-- End problem 3, part (c). -->
+    </answer>
+    <!-- END PROBLEM 3 -->
+
+
+    <!-- BEGIN PROBLEM 4 -->
+    <answer number="4a">
+        <!-- Paste your solution to problem 4, part (a) below this line. --><![CDATA[
+
+DROP TABLE IF EXISTS R;
+CREATE TABLE R(A int, B int, C int, D int);
+INSERT INTO R VALUES (0, 0, 0, 0);
+INSERT INTO R VALUES (0, 1, 1, 1);
+INSERT INTO R VALUES (1, 1, 1, 1);
+INSERT INTO R VALUES (1, 1, 0, 0);
+INSERT INTO R VALUES (1, 1, 0, 2);
+INSERT INTO R VALUES (1, 1, 0, 3);
+
+        ]]><!-- End problem 4, part (a). -->
+    </answer>
+    <answer number="4b">
+        <!-- Paste your solution to problem 4, part (b) below this line. --><![CDATA[
+
+DROP TABLE IF EXISTS S;
+CREATE TABLE S (A int, B int, C int, D int, E int);
+INSERT INTO S (A, B, C, D, E) SELECT R.A, R.B, R.C, R.D, 0 FROM R;
+INSERT INTO S (A, B, C, D, E) SELECT R.A, R.B, R.C, R.D, 1 FROM R;
+
+        ]]><!-- End problem 4, part (b). -->
+    </answer>
+    <!-- END PROBLEM 4 -->
+
+
+</pset>
